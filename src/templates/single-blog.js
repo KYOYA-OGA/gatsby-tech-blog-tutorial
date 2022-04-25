@@ -70,12 +70,12 @@ function SingleBlog({ data }) {
                 ))}
               </span>
             </ParagraphText>
-            <ParagraphText className="author">
+            {/* <ParagraphText className="author">
               <FiUser />
               <Link to={`/authors/${blog.author.slug.current}`}>
                 {blog.author.name}
               </Link>
-            </ParagraphText>
+            </ParagraphText> */}
           </header>
           <hr className="hr" />
           <main className="body">

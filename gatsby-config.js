@@ -1,5 +1,3 @@
-const sanityConfig = require('./sanity-config');
-
 require('dotenv').config('./.env');
 
 module.exports = {
@@ -17,7 +15,8 @@ module.exports = {
     {
       resolve: `gatsby-source-sanity`,
       options: {
-        ...sanityConfig,
+        projectId: process.env.GATSBY_SANITY_PROJECT_ID,
+        dataset: process.env.GATSBY_SANITY_DATASET,
       },
     },
   ],
