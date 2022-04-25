@@ -47,6 +47,7 @@ export const query = graphql`
 
 function SingleCategory({ data }) {
   const category = data.sanityCategory;
+  console.log(category);
   const blogs = data.allSanityBlog.nodes;
 
   return (
@@ -55,7 +56,7 @@ function SingleCategory({ data }) {
         <SEO title={category.title} />
         <div className="container">
           <PageHeader title={category.title} className="pageHeader">
-            <MyPortableText value={category._rowDescription} />
+            <MyPortableText value={category._rawDescription} />
             <GatsbyImage
               image={category.coverImage.asset.gatsbyImageData}
               className="coverImage"
