@@ -47,7 +47,6 @@ export const query = graphql`
 
 function SingleCategory({ data }) {
   const category = data.sanityCategory;
-  console.log(category);
   const blogs = data.allSanityBlog.nodes;
 
   return (

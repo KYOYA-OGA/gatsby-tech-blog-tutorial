@@ -4,8 +4,12 @@ exports.createPages = async ({ graphql, actions }) => {
   const singleCategoryTemplate = require.resolve(
     './src/templates/single-category.js'
   );
-  const CategoryListTemplate = require.resolve(
+  const categoryListTemplate = require.resolve(
     './src/templates/category-list.js'
+  );
+  const authorListTemplate = require.resolve('./src/templates/author-list.js');
+  const singleAuthorTemplate = require.resolve(
+    './src/templates/single-author.js'
   );
   const postPerPage = parseInt(process.env.GATSBY_POST_PER_PAGE) || 5;
   const { createPage } = actions;
@@ -27,6 +31,14 @@ exports.createPages = async ({ graphql, actions }) => {
           }
         }
       }
+      allSanityAuthor {
+        nodes {
+          id
+          slug {
+            current
+          }
+        }
+      }
     }
   `);
 
@@ -34,6 +46,7 @@ exports.createPages = async ({ graphql, actions }) => {
 
   const blogs = result.data.allSanityBlog.nodes;
   const categories = result.data.allSanityCategory.nodes;
+  const authors = result.data.allSanityAuthor.nodes;
 
   // single blog pages
   blogs.forEach((blog) => {
@@ -73,11 +86,35 @@ exports.createPages = async ({ graphql, actions }) => {
   Array.from({ length: totalCategoryListPages }).forEach((_, index) => {
     createPage({
       path: index === 0 ? `/categories` : `/categories/${index + 1}`,
-      component: CategoryListTemplate,
+      component: categoryListTemplate,
       context: {
         limit: postPerPage,
         offset: index * postPerPage,
         numberOfPages: totalCategoryListPages,
+        currentPage: index + 1,
+      },
+    });
+  });
+
+  // author pages
+  authors.forEach((author) => {
+    createPage({
+      path: `/authors/${author.slug.current}`,
+      component: singleAuthorTemplate,
+      context: { id: author.id },
+    });
+  });
+
+  // author list
+  const totalAuthorListPages = Math.ceil(authors.length / postPerPage);
+  Array.from({ length: totalAuthorListPages }).forEach((_, index) => {
+    createPage({
+      path: index === 0 ? `/authors` : `/authors/${index + 1}`,
+      component: authorListTemplate,
+      context: {
+        limit: postPerPage,
+        offset: index * postPerPage,
+        numberOfPages: totalAuthorListPages,
         currentPage: index + 1,
       },
     });
